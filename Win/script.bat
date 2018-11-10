@@ -13,7 +13,7 @@ if %ERRORLEVEL% EQU 0 (
 )
 
 echo [ INFO ] Checking if computer has working internet connection...
-ping roen.us -n 3 -w 1000
+ping roen.us -n 2 -w 1000
 if %ERRORLEVEL% EQU 1 (
   cls
   echo [ FAIL ] Not connected to the internet
@@ -25,16 +25,36 @@ if %ERRORLEVEL% EQU 1 (
 
 cls
 echo [ OK ] All preliminary checks have passed.
+echo [ INFO ] The script will start in 5 seconds. Click [ X ] if you wish to abort.
 timeout 5 >nul
 cls
 
-echo [ INFO ] The script will start within 10 seconds.
-echo [ INFO ] If you want to abort, NOW IS THE TIME.
-timeout 10 >nul
+REM -----------------------------------------------------------------------------------------
 
-cls
 echo [ INFO ] Disabling Guest account...
 net user Guest /active:no
+
+if ERRORLEVEL 1 (
+  echo [ FAIL ] Disabling Guest Account failed.
+  timeout 30 >nul
+  exit
+)
+
 echo [ OK ] Guest account disabled
 timeout 5 >nul
+
+REM -----------------------------------------------------------------------------------------
+
+echo [ INFO ] Setting MAXPWAGE to 14 days...
+net accounts /maxpwage:14
+
+if ERRORLEVEL 1 (
+  echo [ FAIL ] Setting MAXPWAGE failed.
+  timeout 30 >nul
+  exit
+)
+
+echo [ OK ] MAXPWAGE set to 14 days
+timeout 5 >nul
+
 pause
