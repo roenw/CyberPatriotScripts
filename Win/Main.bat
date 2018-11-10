@@ -87,8 +87,8 @@ timeout 5 >nul
 
 REM -----------------------------------------------------------------------------------------
 
-echo [ INFO ] Setting lockout duration to 15 minutes...
-net accounts /lockoutduration:15
+echo [ INFO ] Setting lockout duration to 45 minutes...
+net accounts /lockoutduration:45
 
 if ERRORLEVEL 1 (
   echo [ FAIL ] An error occured while setting lockout duration.
