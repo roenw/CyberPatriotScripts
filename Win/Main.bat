@@ -59,6 +59,93 @@ timeout 5 >nul
 
 REM -----------------------------------------------------------------------------------------
 
+echo [ INFO ] Setting MAXPWAGE to 14 days...
+net accounts /maxpwage:14
+
+if ERRORLEVEL 1 (
+  echo [ FAIL ] An error occured while setting MAXPWAGE.
+  timeout 30 >nul
+  exit
+)
+
+echo [ OK ] Maximum password life set.
+timeout 5 >nul
+
+REM -----------------------------------------------------------------------------------------
+
+echo [ INFO ] Setting MINPWLENGTH to 10 characters...
+net accounts /minpwlen:10
+
+if ERRORLEVEL 1 (
+  echo [ FAIL ] An error occured while setting MINPWLENGTH.
+  timeout 30 >nul
+  exit
+)
+
+echo [ OK ] Minimum password length set.
+timeout 5 >nul
+
+REM -----------------------------------------------------------------------------------------
+
+echo [ INFO ] Setting lockout duration to 15 minutes...
+net accounts /lockoutduration:15
+
+if ERRORLEVEL 1 (
+  echo [ FAIL ] An error occured while setting lockout duration.
+  timeout 30 >nul
+  exit
+)
+
+echo [ OK ] Lockout duration policy is enforced.
+timeout 5 >nul
+
+REM -----------------------------------------------------------------------------------------
+
+echo [ INFO ] Setting lockout threshold to 3 attempts...
+net accounts /lockoutthreshold:3
+
+if ERRORLEVEL 1 (
+  echo [ FAIL ] An error occured while setting lockout threshold.
+  timeout 30 >nul
+  exit
+)
+
+echo [ OK ] Lockout threshold enforced.
+timeout 5 >nul
+
+REM -----------------------------------------------------------------------------------------
+
+echo [ INFO ] Setting lockout window to 15 minutes...
+net accounts /lockoutwindow:15
+
+if ERRORLEVEL 1 (
+  echo [ FAIL ] An error occured while setting lockout window.
+  timeout 30 >nul
+  exit
+)
+
+echo [ OK ] Lockout window enforced.
+timeout 5 >nul
+
+REM -----------------------------------------------------------------------------------------
+
+echo [ INFO ] Begin auditing successful and unsuccessful logon/logoff attempts...
+auditpol /set /category:"Account Logon" /Success:enable /failure:enable
+auditpol /set /category:"Logon/Logoff" /Success:enable /failure:enable
+auditpol /set /category:"Account Management" /Success:enable /failure:enable
+
+if ERRORLEVEL 1 (
+  echo [ FAIL ] An error occured while enabling logging for logon and logoff attempts.
+  timeout 30 >nul
+  exit
+)
+
+echo [ OK ] Now logging all logon and logoff attempts.
+timeout 5 >nul
+
+REM -----------------------------------------------------------------------------------------
+
+
 echo [ INFO ] Disabling shutdown without logon...
 REGEDIT.EXE  /S  "%~dp0\bundle\Disable_Shutdown_without_Logon.reg"
 
@@ -86,6 +173,36 @@ if ERRORLEVEL 1 (
 )
 
 echo [ OK ] All user passwords except self have been changed.
+timeout 5 >nul
+
+REM -----------------------------------------------------------------------------------------
+
+echo [ INFO ] Attempting to force-check for updates and perform updates...
+echo [ INFO ] If the computer updates, you will have to restart the script to execute remaining actions.
+wuauclt.exe /updatenow
+
+if ERRORLEVEL 1 (
+  echo [ FAIL ] Error updating Windows automatically.
+  timeout 30 >nul
+  exit
+)
+
+echo [ OK ] Windows updated!
+timeout 5 >nul
+
+REM -----------------------------------------------------------------------------------------
+
+echo [ INFO ] Attempting to enable Windows Firewall...
+NetSh Advfirewall set allprofiles state on
+Netsh Advfirewall show allprofiles
+
+if ERRORLEVEL 1 (
+  echo [ FAIL ] Error enabling Windows Firewall.
+  timeout 30 >nul
+  exit
+)
+
+echo [ OK ] Windows Firewall enabled.
 timeout 5 >nul
 
 REM -----------------------------------------------------------------------------------------
