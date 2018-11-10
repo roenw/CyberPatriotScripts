@@ -2,6 +2,7 @@
 echo [ INFO ] Performing premilinary checks...
 
 echo [ INFO ] Checking if script is running as Administrator...
+net session >nul 2>&1
 if %ERRORLEVEL% EQU 0 (
   echo [ OK ] Script is running with elevated permissions
 ) else (
@@ -24,5 +25,16 @@ if %ERRORLEVEL% EQU 1 (
 
 cls
 echo [ OK ] All preliminary checks have passed.
-pause
+timeout 5 >nul
+cls
 
+echo [ INFO ] The script will start within 10 seconds.
+echo [ INFO ] If you want to abort, NOW IS THE TIME.
+timeout 10 >nul
+
+cls
+echo [ INFO ] Disabling Guest account...
+net user Guest /active:no
+echo [ OK ] Guest account disabled
+timeout 5 >nul
+pause
