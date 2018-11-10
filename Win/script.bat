@@ -45,6 +45,20 @@ timeout 5 >nul
 
 REM -----------------------------------------------------------------------------------------
 
+echo [ INFO ] Disabling Admin account...
+net user Administrator /active:no
+
+if ERRORLEVEL 1 (
+  echo [ FAIL ] Disabling Admin Account failed.
+  timeout 30 >nul
+  exit
+)
+
+echo [ OK ] Admin account disabled
+timeout 5 >nul
+
+REM -----------------------------------------------------------------------------------------
+
 echo [ INFO ] Setting MAXPWAGE to 14 days...
 net accounts /maxpwage:14
 
