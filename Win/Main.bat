@@ -215,5 +215,7 @@ REM ----------------------------------------------------------------------------
 
 cls
 echo [ OK ] The script has finished executing with no errors. Hope it helped your score out a bit!
-echo [ INFO ] Click any key to exit...
+echo [ INFO ] It's likely that this script installed updates that require a restart.
+echo [ INFO ] Press any key to restart, or [ X ] to exit without restarting.
 pause >nul
+shutdown /r /t 0
