@@ -59,16 +59,39 @@ timeout 5 >nul
 
 REM -----------------------------------------------------------------------------------------
 
-echo [ INFO ] Setting MAXPWAGE to 14 days...
-net accounts /maxpwage:14
+echo [ INFO ] Disabling shutdown without logon...
+REGEDIT.EXE  /S  "%~dp0\bundle\Disable_Shutdown_without_Logon.reg"
 
 if ERRORLEVEL 1 (
-  echo [ FAIL ] Setting MAXPWAGE failed.
+  echo [ FAIL ] Executing premade regedit file to disable shutdown without logon failed.
   timeout 30 >nul
   exit
 )
 
-echo [ OK ] MAXPWAGE set to 14 days
+echo [ OK ] Shutdown without logon disabled.
 timeout 5 >nul
 
-pause
+REM -----------------------------------------------------------------------------------------
+
+echo [ INFO ] Changing all user passwords except self...
+setlocal
+for /f "delims=" %%u in ('cscript //NoLogo %~dp0\bundle\GetLocalUsers.vbs') do (
+  net user "%%u" "kalaheo 5up3r53cur3pa55w0rD$~"
+)
+
+if ERRORLEVEL 1 (
+  echo [ FAIL ] Changing passwords failed.
+  timeout 30 >nul
+  exit
+)
+
+echo [ OK ] All user passwords except self have been changed.
+timeout 5 >nul
+
+REM -----------------------------------------------------------------------------------------
+
+
+cls
+echo [ OK ] The script has finished executing with no errors. Hope it helped your score out a bit!
+echo [ INFO ] Click any key to exit...
+pause >nul
