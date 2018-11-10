@@ -183,8 +183,8 @@ timeout 5 >nul
 REM -----------------------------------------------------------------------------------------
 
 echo [ INFO ] Attempting to block FTP (20, 21)...
-netsh advfirewall firewall add rule name="BlockFTP20" protocol=FTP dir=in localport=20 action=block
-netsh advfirewall firewall add rule name="BlockFTP21" protocol=FTP dir=in localport=21 action=block
+netsh advfirewall firewall add rule name="BlockFTP20" protocol=TCP dir=in localport=20 action=block
+netsh advfirewall firewall add rule name="BlockFTP21" protocol=TCP dir=in localport=21 action=block
 
 if ERRORLEVEL 1 (
   echo [ FAIL ] An error occured while blocking FTP.
