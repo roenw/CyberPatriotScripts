@@ -182,6 +182,50 @@ timeout 5 >nul
 
 REM -----------------------------------------------------------------------------------------
 
+echo [ INFO ] Attempting to block FTP (20, 21)...
+netsh advfirewall firewall add rule name="BlockFTP20" protocol=FTP dir=in localport=20 action=block
+netsh advfirewall firewall add rule name="BlockFTP21" protocol=FTP dir=in localport=21 action=block
+
+if ERRORLEVEL 1 (
+  echo [ FAIL ] An error occured while blocking FTP.
+  timeout 30 >nul
+  exit
+)
+
+echo [ OK ] FTP is blocked.
+timeout 5 >nul
+
+REM -----------------------------------------------------------------------------------------
+
+echo [ INFO ] Attempting to block TCP/Telnet (23)...
+netsh advfirewall firewall add rule name="BlockTelNet23" protocol=TCP dir=in localport=23 action=block
+
+if ERRORLEVEL 1 (
+  echo [ FAIL ] An error occured while blocking TelNet.
+  timeout 30 >nul
+  exit
+)
+
+echo [ OK ] TelNet is blocked.
+timeout 5 >nul
+
+REM -----------------------------------------------------------------------------------------
+
+echo [ INFO ] Attempting to deny RDP access...
+reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 1 /f
+
+if ERRORLEVEL 1 (
+  echo [ FAIL ] An error occured while denying RDP.
+  timeout 30 >nul
+  exit
+)
+
+echo [ OK ] RDP connections are now being denied.
+timeout 5 >nul
+
+REM -----------------------------------------------------------------------------------------
+
+
 echo [ INFO ] Attempting to force-check for updates and perform updates...
 echo [ INFO ] If the computer updates, you will have to restart the script to execute remaining actions.
 cscript //NoLogo %~dp0\bundle\UpdateAllSoftware.vbs
