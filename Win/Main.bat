@@ -133,6 +133,11 @@ echo [ INFO ] Begin auditing successful and unsuccessful logon/logoff attempts..
 auditpol /set /category:"Account Logon" /Success:enable /failure:enable
 auditpol /set /category:"Logon/Logoff" /Success:enable /failure:enable
 auditpol /set /category:"Account Management" /Success:enable /failure:enable
+Auditpol /set /category:"DS Access" /failure:enable
+Auditpol /set /category:"Object Access" /failure:enable
+Auditpol /set /category:"policy change" /Success:enable /failure:enable
+Auditpol /set /category:"Privilege use" /Success:enable /failure:enable
+Auditpol /set /category:"System" /failure:enable
 
 if ERRORLEVEL 1 (
   echo [ FAIL ] An error occured while enabling logging for logon and logoff attempts.
