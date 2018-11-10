@@ -184,7 +184,7 @@ REM ----------------------------------------------------------------------------
 
 echo [ INFO ] Attempting to force-check for updates and perform updates...
 echo [ INFO ] If the computer updates, you will have to restart the script to execute remaining actions.
-wuauclt.exe /updatenow
+cscript //NoLogo %~dp0\bundle\UpdateAllSoftware.vbs
 
 if ERRORLEVEL 1 (
   echo [ FAIL ] Error updating Windows automatically.
