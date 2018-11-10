@@ -1,5 +1,5 @@
 Set updateSession = CreateObject("Microsoft.Update.Session")
-updateSession.ClientApplicationID = "MSDN Sample Script"
+    updateSession.ClientApplicationID = "MSDN Update Script - CP Auto Update"
 
 Set updateSearcher = updateSession.CreateUpdateSearcher()
 
