@@ -32,7 +32,7 @@ cls
 REM -----------------------------------------------------------------------------------------
 
 echo [ [96mINFO[0m ] Disabling Guest account...
-net user Guest /active:no
+net user Guest /active:no >nul
 
 if ERRORLEVEL 1 (
   echo [ [91mFAIL[0m ] Disabling Guest Account failed.
@@ -46,7 +46,7 @@ timeout 1 >nul
 REM -----------------------------------------------------------------------------------------
 
 echo [ [96mINFO[0m ] Disabling Admin account...
-net user Administrator /active:no
+net user Administrator /active:no >nul
 
 if ERRORLEVEL 1 (
   echo [ [91mFAIL[0m ] Disabling Admin Account failed.
@@ -60,7 +60,7 @@ timeout 1 >nul
 REM -----------------------------------------------------------------------------------------
 
 echo [ [96mINFO[0m ] Setting MAXPWAGE to 14 days...
-net accounts /maxpwage:14
+net accounts /maxpwage:14 >nul
 
 if ERRORLEVEL 1 (
   echo [ [91mFAIL[0m ] An error occured while setting MAXPWAGE.
@@ -74,7 +74,7 @@ timeout 1 >nul
 REM -----------------------------------------------------------------------------------------
 
 echo [ [96mINFO[0m ] Setting MINPWLENGTH to 10 characters...
-net accounts /minpwlen:10
+net accounts /minpwlen:10 >nul
 
 if ERRORLEVEL 1 (
   echo [ [91mFAIL[0m ] An error occured while setting MINPWLENGTH.
@@ -88,7 +88,7 @@ timeout 1 >nul
 REM -----------------------------------------------------------------------------------------
 
 echo [ [96mINFO[0m ] Setting lockout duration to 45 minutes...
-net accounts /lockoutduration:45
+net accounts /lockoutduration:45 >nul
 
 if ERRORLEVEL 1 (
   echo [ [91mFAIL[0m ] An error occured while setting lockout duration.
@@ -102,7 +102,7 @@ timeout 1 >nul
 REM -----------------------------------------------------------------------------------------
 
 echo [ [96mINFO[0m ] Setting lockout threshold to 3 attempts...
-net accounts /lockoutthreshold:3
+net accounts /lockoutthreshold:3 >nul
 
 if ERRORLEVEL 1 (
   echo [ [91mFAIL[0m ] An error occured while setting lockout threshold.
@@ -116,7 +116,7 @@ timeout 1 >nul
 REM -----------------------------------------------------------------------------------------
 
 echo [ [96mINFO[0m ] Setting lockout window to 15 minutes...
-net accounts /lockoutwindow:15
+net accounts /lockoutwindow:15 >nul
 
 if ERRORLEVEL 1 (
   echo [ [91mFAIL[0m ] An error occured while setting lockout window.
@@ -130,14 +130,14 @@ timeout 1 >nul
 REM -----------------------------------------------------------------------------------------
 
 echo [ [96mINFO[0m ] Begin auditing successful and unsuccessful logon/logoff attempts...
-auditpol /set /category:"Account Logon" /Success:enable /failure:enable
-auditpol /set /category:"Logon/Logoff" /Success:enable /failure:enable
-auditpol /set /category:"Account Management" /Success:enable /failure:enable
-Auditpol /set /category:"DS Access" /failure:enable
-Auditpol /set /category:"Object Access" /failure:enable
-Auditpol /set /category:"policy change" /Success:enable /failure:enable
-Auditpol /set /category:"Privilege use" /Success:enable /failure:enable
-Auditpol /set /category:"System" /failure:enable
+auditpol /set /category:"Account Logon" /Success:enable /failure:enable >nul
+auditpol /set /category:"Logon/Logoff" /Success:enable /failure:enable >nul
+auditpol /set /category:"Account Management" /Success:enable /failure:enable >nul
+Auditpol /set /category:"DS Access" /failure:enable >nul
+Auditpol /set /category:"Object Access" /failure:enable >nul
+Auditpol /set /category:"policy change" /Success:enable /failure:enable >nul
+Auditpol /set /category:"Privilege use" /Success:enable /failure:enable >nul
+Auditpol /set /category:"System" /failure:enable >nul
 
 if ERRORLEVEL 1 (
   echo [ [91mFAIL[0m ] An error occured while enabling logging for logon and logoff attempts.
@@ -152,7 +152,7 @@ REM ----------------------------------------------------------------------------
 
 
 echo [ [96mINFO[0m ] Disabling shutdown without logon...
-REGEDIT.EXE  /S  "%~dp0\bundle\Disable_Shutdown_without_Logon.reg"
+REGEDIT.EXE  /S  "%~dp0\bundle\Disable_Shutdown_without_Logon.reg" >nul
 
 if ERRORLEVEL 1 (
   echo [ [91mFAIL[0m ] Executing premade regedit file to disable shutdown without logon failed.
@@ -183,8 +183,8 @@ timeout 1 >nul
 REM -----------------------------------------------------------------------------------------
 
 echo [ [96mINFO[0m ] Attempting to block FTP (20, 21)...
-netsh advfirewall firewall add rule name="BlockFTP20" protocol=TCP dir=in localport=20 action=block
-netsh advfirewall firewall add rule name="BlockFTP21" protocol=TCP dir=in localport=21 action=block
+netsh advfirewall firewall add rule name="BlockFTP20" protocol=TCP dir=in localport=20 action=block >nul
+netsh advfirewall firewall add rule name="BlockFTP21" protocol=TCP dir=in localport=21 action=block >nul
 
 if ERRORLEVEL 1 (
   echo [ [91mFAIL[0m ] An error occured while blocking FTP.
@@ -198,7 +198,7 @@ timeout 1 >nul
 REM -----------------------------------------------------------------------------------------
 
 echo [ [96mINFO[0m ] Attempting to block TCP/Telnet (23)...
-netsh advfirewall firewall add rule name="BlockTelNet23" protocol=TCP dir=in localport=23 action=block
+netsh advfirewall firewall add rule name="BlockTelNet23" protocol=TCP dir=in localport=23 action=block >nul
 
 if ERRORLEVEL 1 (
   echo [ [91mFAIL[0m ] An error occured while blocking TelNet.
@@ -212,7 +212,7 @@ timeout 1 >nul
 REM -----------------------------------------------------------------------------------------
 
 echo [ [96mINFO[0m ] Attempting to deny RDP access...
-reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 1 /f
+reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 1 /f >nul
 
 if ERRORLEVEL 1 (
   echo [ [91mFAIL[0m ] An error occured while denying RDP.
