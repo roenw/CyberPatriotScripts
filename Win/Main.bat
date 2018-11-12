@@ -25,7 +25,8 @@ if %ERRORLEVEL% EQU 1 (
 
 cls
 echo [ [92mOK[0m ] All preliminary checks have passed.
-echo [ [96mINFO[0m ] The script will start in 5 seconds. Click [ X ] if you wish to abort.
+echo [ [96mINFO[0m ] CCS Client can take a while to award points, so it's reccomended to have a delay between commands.
+SET /P INTCMD=Enter a delay (in seconds) between commands (Reccomended: 15) 
 timeout 5 >nul
 cls
 
@@ -41,7 +42,7 @@ if ERRORLEVEL 1 (
 )
 
 echo [ [92mOK[0m ] Guest account disabled
-timeout 1 >nul
+timeout %INTCMD% >nul
 
 REM -----------------------------------------------------------------------------------------
 
@@ -55,7 +56,7 @@ if ERRORLEVEL 1 (
 )
 
 echo [ [92mOK[0m ] Admin account disabled
-timeout 1 >nul
+timeout %INTCMD% >nul
 
 REM -----------------------------------------------------------------------------------------
 
@@ -69,7 +70,7 @@ if ERRORLEVEL 1 (
 )
 
 echo [ [92mOK[0m ] Maximum password life set.
-timeout 1 >nul
+timeout %INTCMD% >nul
 
 REM -----------------------------------------------------------------------------------------
 
@@ -83,7 +84,7 @@ if ERRORLEVEL 1 (
 )
 
 echo [ [92mOK[0m ] Minimum password length set.
-timeout 1 >nul
+timeout %INTCMD% >nul
 
 REM -----------------------------------------------------------------------------------------
 
@@ -97,7 +98,7 @@ if ERRORLEVEL 1 (
 )
 
 echo [ [92mOK[0m ] Lockout duration policy is enforced.
-timeout 1 >nul
+timeout %INTCMD% >nul
 
 REM -----------------------------------------------------------------------------------------
 
@@ -111,7 +112,7 @@ if ERRORLEVEL 1 (
 )
 
 echo [ [92mOK[0m ] Lockout threshold enforced.
-timeout 1 >nul
+timeout %INTCMD% >nul
 
 REM -----------------------------------------------------------------------------------------
 
@@ -125,7 +126,7 @@ if ERRORLEVEL 1 (
 )
 
 echo [ [92mOK[0m ] Lockout window enforced.
-timeout 1 >nul
+timeout %INTCMD% >nul
 
 REM -----------------------------------------------------------------------------------------
 
@@ -146,7 +147,7 @@ if ERRORLEVEL 1 (
 )
 
 echo [ [92mOK[0m ] Now logging all logon and logoff attempts.
-timeout 1 >nul
+timeout %INTCMD% >nul
 
 REM -----------------------------------------------------------------------------------------
 
@@ -161,7 +162,7 @@ if ERRORLEVEL 1 (
 )
 
 echo [ [92mOK[0m ] Shutdown without logon disabled.
-timeout 1 >nul
+timeout %INTCMD% >nul
 
 REM -----------------------------------------------------------------------------------------
 
@@ -178,7 +179,7 @@ if ERRORLEVEL 1 (
 )
 
 echo [ [92mOK[0m ] All user passwords except self have been changed.
-timeout 1 >nul
+timeout %INTCMD% >nul
 
 REM -----------------------------------------------------------------------------------------
 
@@ -193,7 +194,7 @@ if ERRORLEVEL 1 (
 )
 
 echo [ [92mOK[0m ] FTP is blocked.
-timeout 1 >nul
+timeout %INTCMD% >nul
 
 REM -----------------------------------------------------------------------------------------
 
@@ -207,7 +208,7 @@ if ERRORLEVEL 1 (
 )
 
 echo [ [92mOK[0m ] TelNet is blocked.
-timeout 1 >nul
+timeout %INTCMD% >nul
 
 REM -----------------------------------------------------------------------------------------
 
@@ -221,10 +222,12 @@ if ERRORLEVEL 1 (
 )
 
 echo [ [92mOK[0m ] RDP connections are now being denied.
-timeout 1 >nul
+timeout %INTCMD% >nul
 
 REM -----------------------------------------------------------------------------------------
-
+:PROMPT
+SET /P AREYOUSURE=Would you like to update Windows now? This is a slow process and will take a lot of time. (y/n)
+IF /I "%AREYOUSURE%" NEQ "Y" GOTO NEXT
 
 echo [ [96mINFO[0m ] Attempting to force-check for updates and perform updates...
 echo [ [96mINFO[0m ] If the computer updates, you will have to restart the script to execute remaining actions.
@@ -237,10 +240,11 @@ if ERRORLEVEL 1 (
 )
 
 echo [ [92mOK[0m ] Windows updated!
-timeout 1 >nul
+timeout %INTCMD% >nul
 
 REM -----------------------------------------------------------------------------------------
 
+:NEXT
 echo [ [96mINFO[0m ] Attempting to enable Windows Firewall...
 NetSh Advfirewall set allprofiles state on
 Netsh Advfirewall show allprofiles
@@ -252,10 +256,9 @@ if ERRORLEVEL 1 (
 )
 
 echo [ [92mOK[0m ] Windows Firewall enabled.
-timeout 1 >nul
+timeout %INTCMD% >nul
 
 REM -----------------------------------------------------------------------------------------
-
 
 cls
 echo [ [92mOK[0m ] The script has finished executing with no errors. Hope it helped your score out a bit!
